@@ -2,15 +2,20 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v1.01.01 |
-| **Date** | 2026-03-15 |
+| **Version** | v1.01.02 |
+| **Date** | 2026-04-09 |
 | **Status** | Locked |
 | **Applies To** | All hub documents, project documents, and canonical reference files |
+| **Owner** | Brian Bewley |
+| **Review Cadence** | Quarterly |
+| **Next Review** | 2026-07-01 |
+| **Staleness Condition** | This document is stale if: (1) a new document type has been introduced that this standard does not address; (2) the versioning schema is being used inconsistently across documents and this standard has not been updated to resolve the ambiguity; (3) more than one quarterly review has been skipped. |
 
 ### Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| v1.01.02 | 2026-04-09 | Added Owner, Review Cadence, Next Review, and Staleness Condition fields to header table. Added three new recommended optional fields (Review Cadence, Next Review, Staleness Condition) to Section 3 guidance. No changes to version schema or status lifecycle. Aligns with project-wide governance gap remediation. |
 | v1.01.01 | 2026-03-15 | First locked version. Captures versioning schema, changelog format, status lifecycle, and document header standard in use across hub documents. |
 
 ---
@@ -81,6 +86,16 @@ Optional fields (include when relevant):
 | **Supersedes** | [prior document name/version] |
 ```
 
+Recommended governance fields (include on all canonical/locked documents):
+
+```markdown
+| **Review Cadence** | Quarterly |
+| **Next Review** | YYYY-MM-DD |
+| **Staleness Condition** | [Specific conditions under which this document should be considered stale and require re-examination] |
+```
+
+**Guidance on staleness conditions:** A staleness condition is not a generic reminder to review. It defines the *specific signals* that indicate the document's content may no longer reflect reality. Good staleness conditions reference observable events: upstream document changes, unrepresented failure modes, skipped reviews, or principles not tested against real decisions within a defined timeframe. Each document's staleness condition should be unique to its purpose.
+
 The header table appears **before** any prose or section content, immediately after the document `# Title`.
 
 ---
@@ -115,29 +130,13 @@ Every versioned document must include a changelog section. Placement: **immediat
 
 ---
 
-## 5. Canonical File Versioning (Commands, Agents, Workflows)
-
-Canonical files distributed by `hub sync` use YAML frontmatter. These files include a `version` field in their frontmatter rather than a markdown header table:
-
-```yaml
----
-version: "v1.01.01"
-owner: "@getdigital2020"
-# ... other frontmatter fields
----
-```
-
-The same increment rules (Section 1) apply. When hub-sync distributes a canonical file, the version in the frontmatter tells each project exactly which version it has.
-
----
-
-## 6. README Files
+## 5. README Files
 
 README files (`README.md`) are **folder scaffolding**, not versioned documents. They do not require a version header, changelog, or status field. They describe the contents and purpose of a directory and are updated in place without version tracking.
 
 ---
 
-## 7. Applying This Standard to a New Document
+## 6. Applying This Standard to a New Document
 
 When creating a new versioned document:
 
@@ -150,18 +149,17 @@ When creating a new versioned document:
 
 ---
 
-## 8. Scope and Applicability
+## 7. Scope and Applicability
 
 This standard applies to:
 
 - All hub canonical documents (framework files, reference files, protocol documents)
 - All project-level documentation that will be cited in hub decisions
 - Any document described as "canonical," "locked," or referenced by a hub command
-- Canonical files (commands, agents) via YAML frontmatter `version` field
 
 This standard does **not** apply to:
 
-- `README.md` files (folder scaffolding — see Section 6)
+- `README.md` files (folder scaffolding — see Section 5)
 - Ephemeral working notes or scratch documents
 - Code files (use semantic versioning via `package.json` or equivalent)
 - External documents not maintained within the hub
