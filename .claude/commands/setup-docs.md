@@ -1,5 +1,5 @@
 ﻿---
-version: "v1.01.01"
+version: "v1.02.00"
 owner: "@getdigital2020"
 review_cadence: quarterly
 derived_from: ["project-hub"]
@@ -80,6 +80,34 @@ These are the single source of truth. If you need to reference a principle, poin
 - Everything else in this `CLAUDE.md` is **project-owned** — hub will never overwrite it.
 - If hub updates this block, accept the update. It will never conflict with project-specific content.
 ```
+
+---
+
+## Step 1b: Session Continuity block (Tier 3+ only)
+
+**This step applies ONLY to Tier 3 and Tier 4 projects.** Determine the tier from `docs/architecture/PROJECT_CLASSIFICATION.md` (or the hub registry). **If the project is Tier 1 or Tier 2, or the tier cannot be determined, SKIP this step entirely** — the session-continuity handoff is scoped to projects with active multi-session development (see `canonical/standards/session-continuity.md`). Putting it on a static/marketing site is bloat.
+
+For Tier 3+ projects:
+
+- Check whether `CLAUDE.md` already contains the exact heading `## Session Continuity — READ FIRST`.
+  - If yes → do nothing (don't duplicate).
+  - If no → insert the block below **immediately after the `Docs-First Rule` block** from Step 1 (or, if that block is absent, after the first `# `/`## ` heading).
+- **Do NOT create `docs/planning/NEXT_SESSION.md` in this step.** It is created lazily on first real use (see the block text). Pre-stamping an empty handoff doc is bloat and would defeat the staleness check.
+
+### The block to insert (do not alter any wording):
+
+```
+## Session Continuity — READ FIRST
+
+At the start of every session, read `docs/planning/NEXT_SESSION.md` before doing anything else — it carries the paste-ready handoff prompt and the current open follow-ups. If that file does not exist yet, create it at the end of your first session that lands material work, using the template in `C:/dev/project-hub/canonical/standards/session-continuity.md`. Update it at the end of every session that lands material work (on `main`, or on the active feature/integration branch when work-in-flight hasn't merged yet). If it is stale — its last-updated date is older than the most recent commit on the branch it describes — say so and update it as part of the session.
+
+*(This block is hub-owned and Tier 3+ only; `hub sync` may re-insert it. Everything else in this CLAUDE.md is project-owned.)*
+```
+
+### How this interacts with hub sync
+
+- This `Session Continuity` block is **hub-canonical for Tier 3+** — `hub sync` may re-insert it if removed (Tier 3+ projects only; Tier 1–2 never receive it).
+- The `NEXT_SESSION.md` file it points to is **project-owned and never synced** — its entire value is the project's real, current state, which only a session in that repo can author. Sync carries the pointer; the repo grows the content.
 
 ---
 
