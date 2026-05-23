@@ -1,4 +1,4 @@
-﻿---
+---
 version: "v1.01.01"
 owner: "@getdigital2020"
 review_cadence: quarterly
@@ -16,9 +16,9 @@ Create an ADR documenting: $ARGUMENTS
 ## Instructions
 
 1. Check `docs/architecture/` for existing ADRs to determine the next number.
-2. If this is a technology selection decision, reference the Technology Selection Principles from the Universal Web Development Principles:
+2. If this is a technology selection decision, reference the Technology Selection Principles from the Universal Web Development Principles v2:
    - Evaluate against: team fit, community/ecosystem, maturity, performance ceiling, escape hatches, operational cost, architecture alignment
-   - Flag any anti-patterns: rÃ©sumÃ©-driven development, premature optimization, framework maximalism, "we might need it" trap, ignoring the exit
+   - Flag any anti-patterns: résumé-driven development, premature optimization, framework maximalism, "we might need it" trap, ignoring the exit
 3. Write the ADR using this format:
 
 ```markdown
