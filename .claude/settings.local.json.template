@@ -1,0 +1,5 @@
+{
+  "_comment": "Copy this file to settings.local.json and customize. This file is gitignored.",
+  "env": {},
+  "permissions": {}
+}
