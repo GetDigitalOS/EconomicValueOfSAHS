@@ -1,12 +1,13 @@
 ﻿---
-version: "v1.02.00"
+version: "v1.03.00"
 owner: "@getdigital2020"
 review_cadence: quarterly
 derived_from: ["project-hub"]
 confidence: high
 validation_count: 33
 staleness_condition: "Re-examine if: Claude Code project setup mechanics change significantly; hub sync file ownership rules change; setup fails or requires manual correction for 2+ consecutive projects; the retrofit workflow adds new required steps."
-last_validated: 2026-03-12
+last_validated: 2026-07-01
+changelog: "v1.03.00 (2026-07-01, RET-2026-0009): reconcile Docs-First block + docs-maintenance layout with the verify-docs UWP matrix — add `operations/` (Tier 3+) and `adr/` to the approved structure, add a Tier-3+ Operational-capture rule so runbooks/incident-response accrete from real ops work, and permit signal-keyed skeletons for Tier-4 runbooks in backfill."
 ---
 
 # /setup-docs
@@ -42,7 +43,9 @@ This block is the **standing instruction** for every Claude Code session, every 
      ```
      docs/
      ├── architecture/
+     ├── adr/               (Architecture Decision Records — Tier 1+)
      ├── examples/
+     ├── operations/        (deployment, monitoring, runbooks, incident-response — Tier 3+)
      ├── planning/
      ├── reference/
      ├── specifications/
@@ -58,6 +61,7 @@ This block is the **standing instruction** for every Claude Code session, every 
    - If something becomes outdated → mark it `[DEPRECATED — see new location]` or move it to a `docs/archive/` subfolder. Never delete history.
    - After any code change that affects design, specs, architecture, or workflow, **always include** in your response:
      > "Documentation update required: [exact file(s) + 1-sentence summary of what changed]"
+   - **Operational capture (Tier 3+):** after a deploy, a production-incident debug, or an outage, record the playbook in `docs/operations/runbooks.md` (detection signal → first response → diagnosis → remediation → escalation), and note post-incident learnings in `docs/operations/incident-response.md`. Runbooks are **designed to accrete from real operational work** — capture the entry in the same session you did the ops work; don't defer it to a cold backfill pass.
 
 3. **Documentation philosophy (enforced)**
    - Living, minimal, high-signal only.
@@ -135,8 +139,10 @@ These rules are binding for every Claude Code session and every code change in t
 - Delete history — use `[DEPRECATED]` markers or move to `docs/archive/`.
 
 ## Approved top-level structure (do not add folders without explicit approval)
-- `architecture/`   — system design, ADRs, data models, diagrams
+- `architecture/`   — system design, data models, diagrams
+- `adr/`            — Architecture Decision Records (`adr-NNN-*.md`; Tier 1+)
 - `examples/`       — working code samples, patterns, usage demos
+- `operations/`     — deployment, monitoring, runbooks, incident-response (Tier 3+)
 - `planning/`       — roadmaps, milestones, feature specs in progress
 - `reference/`      — API docs, config schemas, environment variables, quick-ref tables
 - `specifications/` — finalized feature specs, acceptance criteria
@@ -172,8 +178,10 @@ Using this `CLAUDE.md`, the existing codebase, and any project context visible i
 
 5. **`docs/examples/`** — Are there patterns, conventions, or non-obvious code approaches in this project that a new developer would need to know? Document 1-3 of the most important ones.
 
+6. **`docs/operations/`** (Tier 3+ only) — deployment steps and monitoring/alerting signals. For **`runbooks.md`** (Tier 4) and **`incident-response.md`** (Tier 4), a structured skeleton keyed to *this* project's real detection signals is an acceptable start — unlike other docs, these are designed to fill in from real incidents (see the Operational-capture rule in CLAUDE.md), so seeding the shape is not placeholder-stub bloat.
+
 **Backfill rules:**
-- Only create files you can populate with real, accurate content — no placeholder stubs.
+- Only create files you can populate with real, accurate content — no placeholder stubs. (Exception: Tier-4 `docs/operations/runbooks.md` / `incident-response.md` may start as a signal-keyed skeleton — see priority 6.)
 - Infer from the codebase, not from imagination.
 - If you're uncertain about something, note the uncertainty inline: `[VERIFY: is this still the deployment target?]`
 - Keep each file scannable — use headers, short paragraphs, and tables.

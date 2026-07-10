@@ -1,12 +1,12 @@
 ---
-version: "v1.02.01"
+version: "v1.03.00"
 owner: "@getdigital2020"
 review_cadence: quarterly
 derived_from: ["project-hub"]
 confidence: established
 validation_count: 34
 staleness_condition: "Re-examine if: Universal Web Development Principles v2 changes principles or adds/removes tiers; compliance report outputs consistently misalign with actual production quality; a new cross-cutting concern category is added to the principles framework; Project Hub registry schema changes."
-last_validated: 2026-03-25
+last_validated: 2026-07-10
 ---
 
 # Compliance Check
@@ -19,7 +19,7 @@ Audit this project against its tier's principles from the Universal Web Developm
 2. **Verify Project Hub registration:** Read `C:/dev/project-hub/registry/projects.json` and check if the current project's path exists in the projects array. If not registered, add a **Critical** gap to the report: "Project not registered in Project Hub — run `/scaffold` to register." If registered, update `last_audited` to today's date and commit.
 3. Read the Universal Web Development Principles v2 document.
 4. Examine the actual codebase to evaluate compliance against EVERY principle for this tier and all tiers below it.
-5. Also check active cross-cutting concerns (Privacy, AI, Design System, Dependencies).
+5. Also check active cross-cutting concerns (Privacy, AI, Design System, Dependencies, Domain Email Authentication).
 6. Produce the compliance report below.
 
 ## Evaluation Method
@@ -32,6 +32,7 @@ For each principle, do real verification — don't just check if a file exists:
 - **Performance**: Check for image optimization config, lazy loading, code splitting setup
 - **Testing**: Check test files exist AND have meaningful coverage, not just empty test files
 - **Privacy**: Check for actual privacy policy page, cookie consent implementation, data handling
+- **Domain Email Authentication** *(launch-blocking — ADR-031)*: For any project with a custom domain, run `node C:/dev/project-hub/canonical/standards/email-deliverability-audit.js <domain>`. It grades SPF/DKIM/DMARC/MX from public DNS and prints a punch list. Any ❌ — an unauthenticated or DKIM-less live sender, no DMARC, or a parked/non-sending domain lacking the `v=spf1 -all` + `p=reject` lockdown — is a **Critical** gap. See `canonical/standards/observability.md` §6.
 
 Use these tools to investigate: Read files, Grep for patterns, Glob for file existence, Bash for running audit commands.
 
@@ -59,7 +60,7 @@ Generate a compliance report as `docs/architecture/COMPLIANCE_REPORT.md`:
 
 ## Critical Gaps (Fix Before Launch)
 
-[List any ❌ items in Security, Accessibility, or Privacy — these are non-negotiable]
+[List any ❌ items in Security, Accessibility, Privacy, or Domain Email Authentication — these are non-negotiable]
 
 ## Detailed Results
 
@@ -97,6 +98,9 @@ Generate a compliance report as `docs/architecture/COMPLIANCE_REPORT.md`:
 
 ### Cross-Cutting: Dependency Management
 [Run npm audit, check lock files committed, evaluate dependency count]
+
+### Cross-Cutting: Domain Email Authentication *(launch-blocking — ADR-031)*
+[For any custom-domain project, run `email-deliverability-audit.js <domain>` and report ✅/⚠️/❌ for: SPF (single record, valid, `-all`); DKIM (a selector resolves for every detected sender); DMARC (present + `rua`; enforcing `quarantine`/`reject` expected for T3+ email-sending projects); and — for parked/non-sending domains — the anti-spoofing lockdown (`v=spf1 -all` + `p=reject`). Any ❌ is a Critical gap. See `canonical/standards/observability.md` §6.]
 
 ### Cross-Cutting: Project Hub Registration
 - ✅/❌ **Registered in Project Hub** — Check `C:/dev/project-hub/registry/projects.json` for this project's path
